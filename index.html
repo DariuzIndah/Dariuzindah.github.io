@@ -1,521 +1,297 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>JuanFi Wifi Hotspot System</title>
-    
-	<!-- Bootstrap CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-     <!-- CSS Custom -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    
-    <!-- favicon Icon -->
-    <!--<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">-->
-    <!-- CSS Plugins -->
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Google Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
-     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <title>IED MUBAROK</title>
+    <!-- Menambahkan Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <style>
+        :root {
+            --primary-color: #FFCC00;
+            --bg-dark: #0c0c0c;
+            --text-light: white;
+            --date-bg-color: rgba(0, 0, 0, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-card {
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            justify-content: space-between;
+        }
+
+        .header {
+            height: 15%;
+            background-color: var(--primary-color);
+            color: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .date {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 0.5em;
+            color: var(--text-light);
+            background: var(--date-bg-color);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .clock {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .video-slide {
+            height: 50%;
+            position: relative;
+            background-color: #000;
+        }
+
+        .video-slide iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Container waktu sholat */
+        .waktu-sholat-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            justify-content: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .waktu-sholat-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .waktu-sholat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .hadith {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 10px;
+            padding: 10px;
+            color: var(--primary-color);
+        }
+
+        .footer {
+            height: 10%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .kas-info {
+            animation: scrollText 20s linear infinite;
+        }
+
+        @keyframes scrollText {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: var(--text-light);
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-btn i {
+            width: 20px;
+            height: 20px;
+        }
+		        /* Media query untuk menyembunyikan teks Arab pada perangkat kecil */
+        @media (max-width: 768px) {
+            .hadith p:first-child {
+                display: none;
+            }
+            .waktu-sholat-card {
+                min-width: 120px; /* Ukuran minimal card lebih kecil di layar kecil */
+                max-width: 150px; /* Membatasi ukuran card agar tetap pas */
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="main-card">
+        <div class="header">
+            <div class="date" id="date"></div> <!-- Tanggal di pojok kiri header -->
+            DEXANET
+        </div>
+        <div class="video-slide">
+            <iframe src="https://www.youtube.com/embed/HlUk8U2q6Js?autoplay=1&mute=1&loop=1&playlist=HlUk8U2q6Js" frameborder="0" allowfullscreen></iframe>
+            <div class="clock" id="clock"></div>
+        </div>
+        
+        <!-- Waktu sholat container berada di bawah video -->
+        <div class="waktu-sholat-container" id="waktu-sholat-container"></div>
 
+        <!-- Hadith Display -->
+        <div class="hadith" id="hadith"></div>
 
-<header class="navbar-fixed-top">
-	<div class="container">
-    	<div class="row">
-        	<div class="header_top">
-        		<div class="col-md-2">
-            		<div class="logo_img">
-						<a href="#"><img src="images/logonew.png" alt="logoimage"></a>
-					</div>
-				</div>
-					
-				<div class="col-md-10">
-					<div class="menu_bar">	
-						<nav role="navigation" class="navbar navbar-default">
-							<div class="navbar-header">
-                                <button id="menu_slide"  aria-controls="navbar" aria-expanded="false" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                  </button>
-							   </div>
-							   
-							  <div class="collapse navbar-collapse" id="navbar">
-                            
-									<ul class="nav navbar-nav">
-									  <li><a href="#home" class="js-target-scroll">Home</a></li>
-									  <li><a href="#requirements" class="js-target-scroll">Requirements</a></li>
-									  <li><a href="#services" class="js-target-scroll">Admin Features</a></li>
-									  <li><a href="#testimonial" class="js-target-scroll">About Us</a></li>
-									  <li><a href="#portfolio" class="js-target-scroll">Terms & Condition</a></li>
-									  <li><a href="#donate" class="js-target-scroll">Donate</a></li>
-									  <li><a href="#contact" class="js-target-scroll">Contact</a></li>
-									  
-									</ul>      
-                          		</div>
-							  
-							 
-       			
-						</nav>
-					</div>
-    	        </div>
-			  
-			  </div>
-			</div>
-		</div>
-</header>
-
-<section id="home" class="top_banner_bg secondary-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="top_banner">
-				
-				</div>
-				
-				<div class="col-md-6">
-					<div class="present">
-						<h1> Build your wifi hotspot with our opensource JuanFi System.</h1>
-						
-						<h5> Download from <span> GitHub </span> or <b> Google Drive</b> </h5>
-						
-						<div class="section_btn">
-									<a href="https://github.com/ivanalayan15/JuanFi" target="_blank"> <button class="btn btn-default" type="submit">  GitHub</button> </a>	
-									
-								    <span> <a href="https://drive.google.com/file/d/1ma0z7UfVu9JyJB-GxVKa_SDKUAB0pXFK/view?fbclid=IwAR3UtIt_papG6H1DvROiVIUXwJjMA5OExirvkPhKLJ9OwQ7k5ITCTVVqwcc" target="_blank"> <button class="btn btn-default" type="submit"> Google Drive</button> </a> </span>							
-						</div>
-					</div>
-				</div>
-				
-				<div class="col-md-6">
-					<div class="present_img">
-						<img src="images/kamot.png" alt="image">
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-</section>
-
-
-<section class="primary-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-			
-			<div class="section_heading">
-				<h2> AWESOME FEATURES </h2>
-				
-				<h4> JuanFi offers a wide range of features with Great Functionality for all Mikrotik-base Wifi Vendo Machine.</h4>
-			</div>		
-				
-			<div class="col-md-6">
-				<div class="features_detail">
-					<ul>
-						<li>
-							
-								<i class="fa fa-user" aria-hidden="true"></i> 
-								<h5> Amazing support</h5>
-								Thousands of members that can help and guide building your dream wifi vendo machine.
-							
-						</li>
-						
-						<li>
-							
-								<i class="fa fa-paperclip" aria-hidden="true"></i> 
-								<h5>Firmware Update</h5>
-								Published firmware version equipped with bug fixes and features update for your wifi vendo machine. 
-						</li>
-						
-						<li>
-							
-								<i class="fa fa-camera" aria-hidden="true"></i> 
-								<h5> Easy to Setup</h5>
-								You don't need to learn programming. Our system is design for easy configuration.
-						</li>
-						
-						<li>
-							
-								<i class="fa fa-desktop" aria-hidden="true"></i> 
-								<h5> Low Cost</h5>
-								Just provide the core component like NodeMCU and Mikrotik. We provide the diagram for you.
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-				<div class="col-md-6">
-					<div class="features_img pull-left">
-						<img src="images/feature_tulo.png" alt="image">
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-</section>
-
-
-<section class="primary-bg" id="requirements">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-			
-			<div class="section_heading">
-				<h2> Requirements </h2>
-				
-				<h4> JuanFi System equiped with powerful and affordable components.  </h4>
-			</div>		
-				
-				<div class="col-md-4">
-					<div class="about_us_img">
-						<img src="images/about-us-img2.png" alt="image">
-					</div>
-				</div>
-				
-				
-			<div class="col-md-8">
-				<div class="about_us_detail">
-					<ul>
-						<li>
-								
-								<h6> <i class="fa fa-star-o" aria-hidden="true"></i> ESP8266/ESP32 Module </h6>
-								NodeMCU(ESP8266) for wireless or NodemCU(ESP32) for LAN Based.
-						</li>
-						
-						<li>
-								
-								<h6> <i class="fa fa-heart-o" aria-hidden="true"></i>  Universal Coin Acceptor </h6>
-								This system is design for all universal coin acceptor. Select your own brand and it perfectly work in this system.
-						</li>
-						
-						<li>
-								
-								<h6> <i class="fa fa-laptop" aria-hidden="true"></i>  Mikrotik Rounter </h6>
-								Design for all Mikrotik router with hotspot features. Mikrotik router is the core components of your wifi hotspot machine.
-						</li>
-						
-						<li>
-								
-								<h6> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>  Access Point  </h6>
-								An access point is a device that creates a wireless local area network, or WLAN, usually in an office or large building. 
-						</li>
-						
-						<li>
-								
-								<h6> <i class="fa fa-lightbulb-o" aria-hidden="true"></i>  Node MCU baseboard  </h6>
-								Node MCU baseboard( Optional for wireless) is use to organize your ESP8266/ESP32, Power Supply, Coinslot, LED, and other components used.
-						</li>
-						
-						<li>
-								 
-								<h6> <i class="fa fa-cogs" aria-hidden="true"></i> Power Supply </h6>
-								Power Supply (12v for nodemcu, another 12v for Mikrotik). You need at least 12V 2A power adaptor to power your NodeMCU,Coinslot and other related components.
-						</li>
-						
-						<li>
-								
-								<h6> <i class="fa fa-lightbulb-o" aria-hidden="true"></i>  W5500 LAN Module</h6>
-								W5500 for Lan based only. This W5500 is a Ethernet module that basic on the new type chip W5500, The W5500 chip is a Hardwired TCP/IP embedded Ethernet controller that enables easier internet connection for embedded systems using SPI (Serial Peripheral Interface).
-						</li>
-						
-						<li>
-								
-								<h6> <i class="fa fa-cogs" aria-hidden="true"></i>  LM2596 Module </h6>
-								LM2596 or any DC to DC buck that can convert to 5v for (Lan based only since no available baseboard for ESP32).
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			
-				
-			</div>
-		</div>
-	</div>
-</section>
-
-
-
-<section id="services" class="padding_bottom_none our_service_bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="section_heading section_heading_2">
-					<h2> ADMIN FEATURES </h2>
-				
-					<h4> JuanFi provide an Admin features for Wifi Vendo builders to edit Wifi SSID, User Credintials, Rates and many more.</h4>
-				</div>
-				
-				<div class="col-md-5 pull-right">
-					<div class="services_detail">
-						<ul>
-							<li>
-								<a href="#"><span><i class="fa fa-html5" aria-hidden="true"></i></span> 
-								<h5> Pin Configuration </h5></a>
-								<p> You can set pin configuration for coinslot, LED, and Button functionality.</p>
-							</li>
-							
-							<li>
-								<a href="#"><span><i class="fa fa-desktop" aria-hidden="true"></i></span> 
-								<h5> Promo Rates </h5></a>
-								<p> Set your own promo rates and voucher validity.</p>
-							</li>
-							
-							<li>
-								<a href="#"><span><i class="fa fa-rocket" aria-hidden="true"></i></span> 
-								<h5> Mikrotik Connection </h5></a>
-								<p> Setup Mikrotik SSID and password, user credintials and more.</p>
-							</li>
-						</ul>
-						
-					</div>
-				</div>
-				
-				<div class="col-md-7">
-					<div class="services_img">
-						<img src="images/admin1.png" alt="image-1">
-					</div>
-						
-					<div class="services_img_n">
-						<img src="images/admin2.png" alt="image-1">
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<section id="testimonial" class="testimonial_bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="section_heading section_heading_2">
-					<h2>About Us </h2>
-				
-					<h4> JuanFi is free and opensource software for pisowifi business using mikrotik hotspot router. 
-						For more details please visit our <a href="https://github.com/ivanalayan15/JuanFi" target="_blank">Github Page. </a> 
-
-					</h4>
-				</div>
-							
-				<div class="testimonial_slide">
-					<div class="testi_detail">
-						<div class="testi_img">
-							<img src="images/developer.png" alt="image">
-							
-								<h5> Ivan Julius Alayan</h5>
-								<p> JuanFi Developer</p>
-						</div>
-						
-						<div class="testi-text">
-							<p> The goal of JuanFi is to have many wifi vendo machines to be build and deploy so that it will 
-								able to cover those remote places that has currently no internet access or having a poor internet access. 
-								The more vendo machines we deploy the more we can reach each corner of the world and the more 
-								people will be connected together that provide cheap internet service.
-								<br />
-								<a href="">VIEW MORE >> </a>
-							</p>
-						</div>
-					</div>
-				
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-
-
-<section id="portfolio" class="fifth-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-			
-				<div class="section_heading">
-					<h2> Terms and Condition </h2>
-					
-					<h4>The software is free to use just give credits to the system and to the developers. The software has no absolute warranty or liable in case of loss of income / money in your vendo machine its your own risk to use this software. 
-
-						Selling license of this software is not allowed and prohibited, but you can sell your vendo machine together with this software just give a little credit to the JuanFi system.  </h4>
-				</div>		
-					
-			</div>
-		</div>
-	</div>
-</section>
-
-<section id="donate" class="fifth-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-			
-				<div class="section_heading">
-					<h2> Donate </h2>
-					
-					<h4>Donation is very welcome, if you want to donate, you can donate using
-
-						the following option: Ivan Julius Alayan 09175425572
-						<br />
-						Paypal account: https://www.paypal.com/paypalme/ivanalayan  </h4>
-
-						<img src="images/gcash.png" width="300">
-						<img src="images/paypal.png" width="300">
-				</div>		
-					
-			</div>
-		</div>
-	</div>
-</section>
-
-
-<section id="contact" class="contact_bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="section_heading section_heading_2">
-					<h2> Contact Us </h2>
-				
-					<h4>Let drop a line to us & we will be in touch soon. 
-
-						<li>
-							<span><i class="fa fa-envelope-o" aria-hidden="true"></i></span> 
-							<h5> ivanalayan@gmail.com </h5>
-						</li>
-					</h4>
-				
-				</div>
-							
-				
-				
-				
-				
-				
-			</div>
-		</div>
-	</div>
-</section>
-
-
-
-
-
-<footer class="third-bg">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				
-				<div class="footer_top">
-					<h4> Share JuanFi Software With Your Friends  </h4>
-					
-					<ul>
-						<li> <a href="https://www.facebook.com/groups/1172413279934139/"> <i class="fa fa-facebook" aria-hidden="true"></i> </a> </li>
-						<li> <a href="http://twitter.com/"> <i class="fa fa-twitter" aria-hidden="true"></i> </a> </li>
-						<li> <a href="http://linkedin.com/"> <i class="fa fa-linkedin" aria-hidden="true"></i> </a> </li>
-						<li> <a href="http://google.com/"> <i class="fa fa-google-plus" aria-hidden="true"></i> </a> </li>
-						<li> <a href="http://youtu.be/"> <i class="fa fa-youtube-square" aria-hidden="true"></i> </a> </li>
-						<li> <a href="https://www.instagram.com"> <i class="fa fa-instagram" aria-hidden="true"></i> </a> </li>
-					</ul>
-				</div>
-				
-				
-				
-				
-			</div>
-		</div>
-	</div>
-	
-	<div class="footer_bottom fourth-bg">
-		<!-- Keep Footer Credit Links Intact -->
-          <p> 2022 &copy; Copyright. All rights Reserved. Template By AppLayers. Edited by Marjohn Bebeloni </p>
-        <a href="#" class="backtop"> ^ </a>
+        <div class="footer">
+            <div class="kas-info">Maapin gue yeh kalo ada salah dan khilap , sengaja atau pun memang disengaja. maapin lahir batin ye, minal aidin wal faidzin mohon maap ne </div>
+        </div>
+        
+        <!-- Tombol Fullscreen dengan Ikon Font Awesome -->
+        <button class="fullscreen-btn" id="fullscreen-btn">
+            <i class="fas fa-expand-arrows-alt"></i> <!-- Ikon Font Awesome untuk fullscreen -->
+        </button>
     </div>
-				
-</footer>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/interface.js"></script> 
-<script type="text/javascript"> 
-	$(document).ready(function(){
-	$("#menu_slide").click(function(){
-		$("#navbar").slideToggle('normal');
-	});
-	});
- </script>
-<!--Menu Js Right Menu-->
-<script type="text/javascript">
-$(document).ready(function(){
-  $('#navbar > ul > li:has(ul)').addClass("has-sub");
-  $('#navbar > ul > li > a').click(function() {
-    var checkElement = $(this).next();
-    $('#navbar li').removeClass('dropdown');
-    $(this).closest('li').addClass('dropdown');	
-    if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
-      $(this).closest('li').removeClass('dropdown');
-      checkElement.slideUp('normal');
-    }
-    if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
-      $('#navbar ul ul:visible').slideUp('normal');
-      checkElement.slideDown('normal');
-    }
-    if (checkElement.is('ul')) {
-      return false;
-    } else {
-      return true;	
-    }		
-  });
-});
-<!--end-->
-</script>
-<script type="text/javascript">	
-$("#navbar").on("click", function(event){
-    event.stopPropagation();
-});
-$(".dropdown-menu").on("click", function(event){
-    event.stopPropagation();
-});
-$(document).on("click", function(event){
-    $(".dropdown-menu").slideUp('normal');
-});	
 
-$(".navbar-header").on("click", function(event){
-    event.stopPropagation();
-});
-$(document).on("click", function(event){
-    $("#navbar").slideUp('normal');
-});		
-</script>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
 
+            // Menambahkan tanggal dan hari
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const dayName = days[now.getDay()];
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // Bulan dimulai dari 0
+            const year = now.getFullYear();
+            document.getElementById('date').textContent = `${dayName}, ${day}/${month}/${year}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function fetchPrayerTimes(lat, lon) {
+            const apiUrl = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const timings = data.data.timings;
+                    const waktuSholat = [
+                        { nama: "Subuh", waktu: timings.Fajr },
+                        { nama: "Dzuhur", waktu: timings.Dhuhr },
+                        { nama: "Ashar", waktu: timings.Asr },
+                        { nama: "Maghrib", waktu: timings.Maghrib },
+                        { nama: "Isya", waktu: timings.Isha }
+                    ];
+                    document.getElementById('waktu-sholat-container').innerHTML = waktuSholat.map(item => `
+                        <div class="waktu-sholat-card">
+                            <p><strong>${item.nama}</strong></p>
+                            <p>${item.waktu}</p>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                fetchPrayerTimes(position.coords.latitude, position.coords.longitude);
+            }, () => {
+                fetchPrayerTimes(-6.2088, 106.8456); // Default Jakarta coordinates
+            });
+        } else {
+            fetchPrayerTimes(-6.2088, 106.8456); // Default Jakarta coordinates
+        }
+
+        const hadiths = [
+            { arab: "الصَّلَاةُ نُورٌ", terjemah: "Shalat adalah cahaya." },
+            { arab: "إِنَّ أَحَبَّ الْأَعْمَالِ إِلَى اللَّهِ الصَّلَاةُ عَلَى وَقْتِهَا", terjemah: "Sesungguhnya amalan yang paling dicintai Allah adalah shalat pada waktunya." },
+            { arab: "مَنْ يَرِدِ اللَّهُ بِهِ خَيْرًا يُفَقِّهْهُ فِي الدِّينِ", terjemah: "Barangsiapa yang Allah kehendaki kebaikan baginya, maka Dia akan memberikan pemahaman dalam agama." },
+            { arab: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", terjemah: "Sesungguhnya segala amal itu tergantung pada niatnya." },
+            { arab: "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ", terjemah: "Tidak sempurna iman salah seorang di antara kalian hingga ia mencintai untuk saudaranya apa yang ia cintai untuk dirinya sendiri." },
+            { arab: "الدِّينُ يُسْرٌ", terjemah: "Sesungguhnya agama itu mudah." },
+            { arab: "مَنْ صَلَّى الْفَجْرَ فِي جَمَاعَةٍ فَهُوَ فِي ذِمَّةِ اللَّهِ", terjemah: "Barangsiapa yang shalat Subuh berjamaah, maka ia dalam lindungan Allah." },
+            { arab: "الرِّحْمَةُ لَا تُنْزَعُ إِلَّا مِنْ شَقِيٍّ", terjemah: "Kasih sayang tidak dicabut kecuali dari orang yang celaka." },
+            { arab: "الكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", terjemah: "Perkataan yang baik adalah sedekah." },
+            { arab: "مَنْ لَا يَرْحَمُ لَا يُرْحَمُ", terjemah: "Barangsiapa yang tidak memberikan rahmat, maka ia tidak akan diberi rahmat." }
+        ];
+        let hadithIndex = 0;
+        function updateHadith() {
+            const hadith = hadiths[hadithIndex];
+            document.getElementById('hadith').innerHTML = `<p>${hadith.arab}</p><p>${hadith.terjemah}</p>`;
+            hadithIndex = (hadithIndex + 1) % hadiths.length;
+        }
+        setInterval(updateHadith, 10000);
+        updateHadith();
+
+        // Fungsi untuk masuk/keluar fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+    </script>
 </body>
-<!-- JS Plugins -->
-  </html>
+</html>
