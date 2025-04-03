@@ -1,339 +1,297 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-<meta charset="utf-8">
-<title>DJCELL NET MEDIA</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="" />
-<meta name="author" content="http://webthemez.com" />
-<!-- css -->
-<link href="css/bootstrap.min.css" rel="stylesheet" />
-<link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
-<link href="css/jcarousel.css" rel="stylesheet" />
-<link href="css/flexslider.css" rel="stylesheet" />
-<link href="js/owl-carousel/owl.carousel.css" rel="stylesheet"> 
-<link href="css/style.css" rel="stylesheet" />
- 
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IED MUBAROK</title>
+    <!-- Menambahkan Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <style>
+        :root {
+            --primary-color: #FFCC00;
+            --bg-dark: #0c0c0c;
+            --text-light: white;
+            --date-bg-color: rgba(0, 0, 0, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-card {
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            justify-content: space-between;
+        }
+
+        .header {
+            height: 15%;
+            background-color: var(--primary-color);
+            color: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .date {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 0.5em;
+            color: var(--text-light);
+            background: var(--date-bg-color);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .clock {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .video-slide {
+            height: 50%;
+            position: relative;
+            background-color: #000;
+        }
+
+        .video-slide iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Container waktu sholat */
+        .waktu-sholat-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            justify-content: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .waktu-sholat-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .waktu-sholat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .hadith {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 10px;
+            padding: 10px;
+            color: var(--primary-color);
+        }
+
+        .footer {
+            height: 10%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .kas-info {
+            animation: scrollText 20s linear infinite;
+        }
+
+        @keyframes scrollText {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: var(--text-light);
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-btn i {
+            width: 20px;
+            height: 20px;
+        }
+		        /* Media query untuk menyembunyikan teks Arab pada perangkat kecil */
+        @media (max-width: 768px) {
+            .hadith p:first-child {
+                display: none;
+            }
+            .waktu-sholat-card {
+                min-width: 120px; /* Ukuran minimal card lebih kecil di layar kecil */
+                max-width: 150px; /* Membatasi ukuran card agar tetap pas */
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="wrapper" class="home-page">
-	<!-- start header -->
-	<header>
-        <div class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"/></a>
-                </div>
-                <div class="navbar-collapse collapse ">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Home</a></li> 
-						<li><a href="about.html">About Us</a></li>
-						<li><a href="services.html">Services</a></li>
-                        <li><a href="courses.html">Courses</a></li>
-                        <li><a href="pricing.html">Pricing</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
+    <div class="main-card">
+        <div class="header">
+            <div class="date" id="date"></div> <!-- Tanggal di pojok kiri header -->
+            DEXANET
         </div>
-	</header>
-	<!-- end header -->
-	<section id="banner">
-	 
-	<!-- Slider -->
-        <div id="main-slider" class="flexslider">
-            <ul class="slides">
-              <li>
-                <img src="img/slides/1.jpg" alt="" />
-                <div class="flex-caption container">
-                    <h3>Smart Connecting..</h3> 
-					<p>Doloribus omnis minus temporibus perferendis ipsa<br/> architecto non, magni quam</p> 
-					<a href="#" class="btn btn-theme">Read More</a>
-                </div>
-              </li>
-              <li>
-                <img src="img/slides/2.jpg" alt="" />
-                <div class="flex-caption container">
-                    <h3Best Surfing Experience..</h3> 
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing<br/> elitincidunt eius magni provident.</p> 
-					<a href="#" class="btn btn-theme">Read More</a>
-                </div>
-              </li>
-            </ul>
+        <div class="video-slide">
+            <iframe src="https://www.youtube.com/embed/HlUk8U2q6Js?autoplay=1&mute=1&loop=1&playlist=HlUk8U2q6Js" frameborder="0" allowfullscreen></iframe>
+            <div class="clock" id="clock"></div>
         </div>
-	<!-- end slider -->
- 
-	</section>
-	<section class="txt-area">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="aligncenter"><h1 class="aligncenter">Our Product</h1>We offer a variety of products designed to make your network experience more reliable and efficient. From routers to switches, we have everything you need to stay connected. </div>
-				
-			</div>
-		</div>
-	</div>
-	</section>
-	
-	
-	<section id="content">
-	
-	
-	<div class="container">
-		<div class="row">
-                <div class="features">
-                    <div class="col-md-4 col-sm-6 wow fadeInUp animated" data-wow-duration="300ms" data-wow-delay="0ms" style="visibility: visible; -webkit-animation-duration: 300ms; -webkit-animation-delay: 0ms;">
-                        <div class="media service-box">
-                            <div class="pull-left">
-                                <i class="fa fa-leanpub"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Connectivity Solutions</h4>
-                                <p>We provide reliable and efficient internet connectivity solutions for both personal and business needs.</p>
-                            </div>
-                        </div>
-                    </div><!--/.col-md-4-->
+        
+        <!-- Waktu sholat container berada di bawah video -->
+        <div class="waktu-sholat-container" id="waktu-sholat-container"></div>
 
-                    <div class="col-md-4 col-sm-6 wow fadeInUp animated" data-wow-duration="300ms" data-wow-delay="100ms" style="visibility: visible; -webkit-animation-duration: 300ms; -webkit-animation-delay: 100ms;">
-                        <div class="media service-box">
-                            <div class="pull-left">
-                                <i class="fa fa-users"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Customer Support</h4>
-                                <p>Our expert support team is here to help you troubleshoot and resolve issues with your network services.</p>
-                            </div>
-                        </div>
-                    </div><!--/.col-md-4-->
+        <!-- Hadith Display -->
+        <div class="hadith" id="hadith"></div>
 
-                    <div class="col-md-4 col-sm-6 wow fadeInUp animated" data-wow-duration="300ms" data-wow-delay="200ms" style="visibility: visible; -webkit-animation-duration: 300ms; -webkit-animation-delay: 200ms;">
-                        <div class="media service-box">
-                            <div class="pull-left">
-                                <i class="fa fa-trophy"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Network Infrastructure</h4>
-                                <p>We specialize in designing and installing custom network infrastructures tailored to your specific requirements.</p>
-                            </div>
-                        </div>
-                    </div><!--/.col-md-4-->
-                
-                    <div class="col-md-4 col-sm-6 wow fadeInUp animated" data-wow-duration="300ms" data-wow-delay="300ms" style="visibility: visible; -webkit-animation-duration: 300ms; -webkit-animation-delay: 300ms;">
-                        <div class="media service-box">
-                            <div class="pull-left">
-                                <i class="fa fa-user-plus"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Wi-Fi Solutions</h4>
-                                <p>We provide powerful and secure Wi-Fi solutions for businesses and homes, ensuring seamless connectivity.</p>
-                            </div>
-                        </div>
-                    </div><!--/.col-md-4-->
+        <div class="footer">
+            <div class="kas-info">Maapin gue yeh kalo ada salah dan khilap , sengaja atau pun memang disengaja. maapin lahir batin ye, minal aidin wal faidzin mohon maap ne </div>
+        </div>
+        
+        <!-- Tombol Fullscreen dengan Ikon Font Awesome -->
+        <button class="fullscreen-btn" id="fullscreen-btn">
+            <i class="fas fa-expand-arrows-alt"></i> <!-- Ikon Font Awesome untuk fullscreen -->
+        </button>
+    </div>
 
-                    <div class="col-md-4 col-sm-6 wow fadeInUp animated" data-wow-duration="300ms" data-wow-delay="400ms" style="visibility: visible; -webkit-animation-duration: 300ms; -webkit-animation-delay: 400ms;">
-                        <div class="media service-box">
-                            <div class="pull-left">
-                                <i class="fa fa-newspaper-o"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Network Security</h4>
-                                <p>We implement robust network security measures to protect your data and privacy at all times.</p>
-                            </div>
-                        </div>
-                    </div><!--/.col-md-4-->
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
 
-                    <div class="col-md-4 col-sm-6 wow fadeInUp animated" data-wow-duration="300ms" data-wow-delay="500ms" style="visibility: visible; -webkit-animation-duration: 300ms; -webkit-animation-delay: 500ms;">
-                        <div class="media service-box">
-                            <div class="pull-left">
-                                <i class="fa fa-cubes"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Device Management</h4>
-                                <p>We offer services to manage and optimize your devices, ensuring they function at their best.</p>
-                            </div>
-                        </div>
-                    </div><!--/.col-md-4-->
-                </div>
-            </div>	 
-	 
+            // Menambahkan tanggal dan hari
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const dayName = days[now.getDay()];
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // Bulan dimulai dari 0
+            const year = now.getFullYear();
+            document.getElementById('date').textContent = `${dayName}, ${day}/${month}/${year}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-	</div>
-	</section>
-	
-		<section class="aboutUs">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="aligncenter"><h2 class="aligncenter">Our Product</h2>We offer a variety of products designed to make your network experience more reliable and efficient. From routers to switches, we have everything you need to stay connected.</div>
-				<br/>
-			</div>
-		</div> 
-		<div class="row">
-							<div class="col-md-6">
-								<img src="img/img1.png" alt="">
-								<div class="space"></div>
-							</div>
-							<div class="col-md-6">
-								<p>Our products are designed with the latest technology, offering top-notch performance and reliability. Whether you're building a home network or a business solution, we have what you need to stay ahead.</p>
-								<ul class="list-unstyled">
-									<li><i class="fa fa-arrow-circle-right pr-10 colored"></i> High-quality routers</li>
-									<li><i class="fa fa-arrow-circle-right pr-10 colored"></i> Reliable switches</li>
-									<li><i class="fa fa-arrow-circle-right pr-10 colored"></i> Secure devices</li>
-									<li><i class="fa fa-arrow-circle-right pr-10 colored"></i> Easy setup</li>
-									<li><i class="fa fa-arrow-circle-right pr-10 colored"></i> Affordable pricing</li>
-								</ul>
-							</div>
-						</div>
-	
-	</div>
-	</section>
-	<section id='events'>
-	<div class="container">
-	<div class="row">
-			<div class="col-md-12">
-				<div class="aligncenter"><h2 class="aligncenter">Our Events</h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores quae porro consequatur aliquam, incidunt eius magni provident, doloribus omnis minus temporibus perferendis nesciunt quam repellendus nulla nemo ipsum odit corrupti consequuntur possimus.</div>
-				<br>
-			</div>
-		</div>
-	<div class="row">
-                <div class="col-md-4">
-                    <div class="post3">
-                        <img src="img/e1.png" alt="">
-                        <a href="#">
-                            <time datetime="2025-03-01">
-                                <span class="year">2025</span>
-                                <span class="month">Feb</span>
-                            </time>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipis.</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="post3">
-                        <img src="img/e2.png" alt="">
-                        <a href="#">
-                            <time datetime="2025-03-01">
-                                <span class="year">2025</span>
-                                <span class="month">March</span>
-                            </time>
-                            <p>Apsum dolor sit amet, consectetur adipisdslif.</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="post3">
-                        <img src="img/e3.png" alt="">
-                        <a href="#">
-                            <time datetime="2025-03-01">
-                                <span class="year">2025</span>
-                                <span class="month">April</span>
-                            </time>
-                            <p>Dolor sit amet, consectetur adipisic indfeft</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-	</div>
-	</section>
-	
-	<footer>
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-3">
-				<div class="widget">
-					<h5 class="widgetheading">Our Contact</h5>
-					<address>
-					<strong>DJCELL NET MEDIA</strong><br>
-					JL GARUDA ASEMDOYONG<br>
-					 CODE-POS-52361 INDONESIA.</address>
-					<p>
-						<i class="icon-phone"></i> (+62) 87764212231 <br>
-						<i class="icon-envelope-alt"></i> mail@djcell.site
-					</p>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="widget">
-					<h5 class="widgetheading">Quick Links</h5>
-					<ul class="link-list">
-						<li><a href="#">Latest Events</a></li>
-						<li><a href="#">Terms and conditions</a></li>
-						<li><a href="#">Privacy policy</a></li>
-						<li><a href="#">Career</a></li>
-						<li><a href="#">Contact us</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="widget">
-					<h5 class="widgetheading">Latest posts</h5>
-					<ul class="link-list">
-						<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
-						<li><a href="#">Pellentesque et pulvinar enim. Quisque at tempor ligula</a></li>
-						<li><a href="#">Natus error sit voluptatem accusantium doloremque</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="widget">
-					<h5 class="widgetheading">Recent News</h5>
-					<ul class="link-list">
-						<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
-						<li><a href="#">Pellentesque et pulvinar enim. Quisque at tempor ligula</a></li>
-						<li><a href="#">Natus error sit voluptatem accusantium doloremque</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="sub-footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="copyright">
-						<p>
-							<span>&copy; My Site 2025 All right reserved. By </span><a href="https://djcell.site" target="_blank">WebThemez</a>
-						</p>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<ul class="social-network">
-						<li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-						<li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-						<li><a href="#" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-						<li><a href="#" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-						<li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	</footer>
-</div>
-<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-<!-- javascript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="js/jquery.js"></script>
-<script src="js/jquery.easing.1.3.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.fancybox.pack.js"></script>
-<script src="js/jquery.fancybox-media.js"></script> 
-<script src="js/portfolio/jquery.quicksand.js"></script>
-<script src="js/portfolio/setting.js"></script>
-<script src="js/jquery.flexslider.js"></script>
-<script src="js/animate.js"></script>
-<script src="js/custom.js"></script>
-<script src="js/owl-carousel/owl.carousel.js"></script>
+        function fetchPrayerTimes(lat, lon) {
+            const apiUrl = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const timings = data.data.timings;
+                    const waktuSholat = [
+                        { nama: "Subuh", waktu: timings.Fajr },
+                        { nama: "Dzuhur", waktu: timings.Dhuhr },
+                        { nama: "Ashar", waktu: timings.Asr },
+                        { nama: "Maghrib", waktu: timings.Maghrib },
+                        { nama: "Isya", waktu: timings.Isha }
+                    ];
+                    document.getElementById('waktu-sholat-container').innerHTML = waktuSholat.map(item => `
+                        <div class="waktu-sholat-card">
+                            <p><strong>${item.nama}</strong></p>
+                            <p>${item.waktu}</p>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                fetchPrayerTimes(position.coords.latitude, position.coords.longitude);
+            }, () => {
+                fetchPrayerTimes(-6.2088, 106.8456); // Default Jakarta coordinates
+            });
+        } else {
+            fetchPrayerTimes(-6.2088, 106.8456); // Default Jakarta coordinates
+        }
+
+        const hadiths = [
+            { arab: "الصَّلَاةُ نُورٌ", terjemah: "Shalat adalah cahaya." },
+            { arab: "إِنَّ أَحَبَّ الْأَعْمَالِ إِلَى اللَّهِ الصَّلَاةُ عَلَى وَقْتِهَا", terjemah: "Sesungguhnya amalan yang paling dicintai Allah adalah shalat pada waktunya." },
+            { arab: "مَنْ يَرِدِ اللَّهُ بِهِ خَيْرًا يُفَقِّهْهُ فِي الدِّينِ", terjemah: "Barangsiapa yang Allah kehendaki kebaikan baginya, maka Dia akan memberikan pemahaman dalam agama." },
+            { arab: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", terjemah: "Sesungguhnya segala amal itu tergantung pada niatnya." },
+            { arab: "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ", terjemah: "Tidak sempurna iman salah seorang di antara kalian hingga ia mencintai untuk saudaranya apa yang ia cintai untuk dirinya sendiri." },
+            { arab: "الدِّينُ يُسْرٌ", terjemah: "Sesungguhnya agama itu mudah." },
+            { arab: "مَنْ صَلَّى الْفَجْرَ فِي جَمَاعَةٍ فَهُوَ فِي ذِمَّةِ اللَّهِ", terjemah: "Barangsiapa yang shalat Subuh berjamaah, maka ia dalam lindungan Allah." },
+            { arab: "الرِّحْمَةُ لَا تُنْزَعُ إِلَّا مِنْ شَقِيٍّ", terjemah: "Kasih sayang tidak dicabut kecuali dari orang yang celaka." },
+            { arab: "الكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", terjemah: "Perkataan yang baik adalah sedekah." },
+            { arab: "مَنْ لَا يَرْحَمُ لَا يُرْحَمُ", terjemah: "Barangsiapa yang tidak memberikan rahmat, maka ia tidak akan diberi rahmat." }
+        ];
+        let hadithIndex = 0;
+        function updateHadith() {
+            const hadith = hadiths[hadithIndex];
+            document.getElementById('hadith').innerHTML = `<p>${hadith.arab}</p><p>${hadith.terjemah}</p>`;
+            hadithIndex = (hadithIndex + 1) % hadiths.length;
+        }
+        setInterval(updateHadith, 10000);
+        updateHadith();
+
+        // Fungsi untuk masuk/keluar fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+    </script>
 </body>
 </html>
