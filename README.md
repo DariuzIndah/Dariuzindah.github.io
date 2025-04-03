@@ -1,2 +1,0 @@
-# NgopiNet
-# Dariuzindah.github.io
