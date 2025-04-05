@@ -2,221 +2,200 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jam Sholat Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SyiarHub - Jam Sholat Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.1/moment-hijri.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
+      font-family: 'Inter', sans-serif;
       overflow: hidden;
     }
     body {
-      background: url('baground.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
+      transition: background 1s ease-in-out;
     }
-    #mainContainer {
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    .clock {
+      font-size: 4rem;
+      font-weight: bold;
     }
-    .bg-dark-glass {
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      animation: marquee 20s linear infinite;
     }
-    .slide {
-      transition: opacity 1s ease-in-out;
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
     }
-    .slide.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    body::before {
-      content: '';
+    .stars {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/media/stars.png');
+      animation: twinkling 200s linear infinite;
+      opacity: 0.15;
+      z-index: 0;
+    }
+    @keyframes twinkling {
+      from { background-position: 0 0; }
+      to { background-position: -10000px 5000px; }
     }
   </style>
 </head>
-<body>
-  <div id="mainContainer" class="px-4 py-2 space-y-4">
-    <button onclick="toggleFullscreen()" class="absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full z-50">
-      🔳
-    </button>
+<body class="min-h-screen flex flex-col justify-between relative text-white" id="body">
 
-    <div class="bg-dark-glass rounded-xl p-4">
-      <div class="flex justify-between items-center flex-wrap md:flex-nowrap">
-        <div>
-          <div class="text-lg" id="tanggalMasehi"></div>
-          <div class="text-green-400 text-md" id="tanggalHijri"></div>
-        </div>
-        <div class="text-center w-full md:w-auto my-2">
-          <h1 class="text-3xl font-bold text-green-300">Masjid Al-Hikmah</h1>
-          <p class="text-sm text-gray-300">Jl. Contoh Nomor 123, Indonesia</p>
-        </div>
-        <div class="text-3xl font-mono text-green-400" id="clock"></div>
-      </div>
+  <!-- Partikel Bintang -->
+  <div class="stars hidden" id="stars"></div>
+
+  <!-- Tombol Fullscreen -->
+  <button onclick="toggleFullscreen()" class="fixed top-4 right-4 bg-black bg-opacity-60 hover:bg-opacity-80 p-3 rounded-full z-50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3H5a2 2 0 00-2 2v3m0 8v3a2 2 0 002 2h3m8-16h3a2 2 0 012 2v3m0 8v3a2 2 0 01-2 2h-3" />
+    </svg>
+  </button>
+
+  <!-- Header -->
+  <div class="text-center py-6 relative z-10">
+    <div class="flex justify-between px-12 text-2xl">
+      <div id="tanggal" class="text-left"></div>
+      <div id="jam" class="clock text-green-400"></div>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <iframe width="100%" height="250" class="rounded-xl"
-          src="https://www.youtube.com/embed/Va6btR5aI5s"
-          frameborder="0" allowfullscreen></iframe>
-        <div class="bg-dark-glass mt-2 px-3 py-1 rounded text-center">
-          <strong>Ramadhan</strong><br><small>Menunggu keputusan pemerintah</small>
-        </div>
-      </div>
-
-      <div class="bg-dark-glass p-4 rounded-xl relative">
-        <div class="h-28 overflow-hidden relative">
-          <div class="absolute inset-0 slide" id="hadis1">
-            <p class="text-xl text-right mb-2">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ</p>
-            <p class="text-center">Sesungguhnya amal perbuatan tergantung pada niatnya.</p>
-          </div>
-          <div class="absolute inset-0 slide hidden" id="hadis2">
-            <p class="text-xl text-right mb-2">الدُّنْيَا سِجْنُ الْمُؤْمِنِ</p>
-            <p class="text-center">Dunia adalah penjara bagi orang mukmin dan surga bagi orang kafir.</p>
-          </div>
-          <div class="absolute inset-0 slide hidden" id="hadis3">
-            <p class="text-xl text-right mb-2">مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ</p>
-            <p class="text-center">Barangsiapa beriman kepada Allah dan hari akhir, hendaklah berkata baik atau diam.</p>
-          </div>
-          <div class="absolute inset-0 slide hidden" id="hadis4">
-            <p class="text-xl text-right mb-2">إِنَّ مِنْ خِيَارِكُمْ أَحْسَنُكُمْ أَخْلَاقًا</p>
-            <p class="text-center">Sebaik-baik kalian adalah yang paling baik akhlaknya.</p>
-          </div>
-          <div class="absolute inset-0 slide hidden" id="hadis5">
-            <p class="text-xl text-right mb-2">إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ وَأَمْوَالِكُمْ، وَلَكِنْ يَنْظُرُ إِلَى قُلُوبِكُمْ وَأَعْمَالِكُمْ</p>
-            <p class="text-center">Sesungguhnya Allah tidak melihat rupa dan harta kalian, tetapi Dia melihat hati dan amal kalian.</p>
-          </div>
-          <div class="absolute inset-0 slide hidden" id="hadis6">
-            <p class="text-xl text-right mb-2">ثَلاَثٌ مَنْ كُنَّ فِيهِ وَجَدَ حَلاَوَةَ الإِيمَانِ</p>
-            <p class="text-center">Tiga hal yang jika ada pada seseorang, ia akan merasakan manisnya iman: mencintai Allah dan Rasul-Nya di atas segalanya, mencintai karena Allah, dan membenci kembali kepada kekufuran seperti benci dilempar ke neraka.</p>
-          </div>
-        </div>
-        <div class="flex items-center justify-center mt-4 space-x-4">
-          <button onclick="prevAudio()" class="text-white text-xl">⏮</button>
-          <button onclick="togglePlay()" class="text-white text-2xl" id="playPause">▶️</button>
-          <button onclick="nextAudio()" class="text-white text-xl">⏭</button>
-        </div>
-        <audio id="audioPlayer" src="https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3"></audio>
-      </div>
-    </div>
-
-    <div id="jadwalContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center text-white"></div>
-
-    <marquee class="text-white mt-4 bg-black bg-opacity-30 p-2 rounded">
-      Mohon HP-nya di mode pesawat agar tidak mengganggu jamaah | syiarhub.com
-    </marquee>
+    <h1 class="text-6xl font-bold text-green-400 mt-4">MASJID NURUL IMAN</h1>
+    <p class="text-2xl mt-2">Jl. Contoh Alamat, Kecamatan, Kota</p>
   </div>
 
-  <audio id="azanPlayer" src="https://yourdomain.com/audio/azan.mp3"></audio>
+  <!-- Konten Utama -->
+  <div class="grid grid-cols-2 gap-6 px-12 mb-6 relative z-10">
+    <!-- Kiri -->
+    <div class="flex flex-col gap-6">
+      <div class="bg-black bg-opacity-60 p-8 rounded-2xl text-center">
+        <h2 class="text-5xl mb-4 leading-relaxed">قَدْ أَفْلَحَ مَن زَكَّاهَا</h2>
+        <p class="text-3xl font-semibold mb-4">Sungguh beruntung orang yang menyucikan jiwanya.</p>
+        <div class="text-lg italic text-white opacity-80" id="hadist">"Barangsiapa mengerjakan sholat, maka ia telah bersyukur." (HR. Bukhari)</div>
+      </div>
+      <div class="bg-black bg-opacity-60 p-6 rounded-xl">
+        <div class="text-2xl font-bold mb-2">Menuju Ramadhan</div>
+        <div id="countdown" class="text-2xl text-green-300">--</div>
+      </div>
+    </div>
+
+    <!-- Kanan -->
+    <div class="flex flex-col gap-6">
+      <div class="bg-black bg-opacity-60 p-6 rounded-2xl">
+        <iframe class="w-full h-[400px] rounded-xl" src="https://www.youtube.com/embed/Nm0xOe5cXJ4" title="Kajian" frameborder="0" allowfullscreen></iframe>
+        <audio id="adzan" class="w-full mt-4 hidden">
+          <source src="https://cdn.pixabay.com/download/audio/2021/10/18/audio_655ef732c3.mp3" type="audio/mp3">
+        </audio>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jadwal Sholat -->
+  <div id="jadwal-sholat" class="grid grid-cols-5 gap-6 text-center text-white text-xl font-bold px-12 relative z-10 mb-4">
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl"><div class="text-green-400 text-4xl" id="subuh">--:--</div>Subuh</div>
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl"><div class="text-green-400 text-4xl" id="dzuhur">--:--</div>Dzuhur</div>
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl"><div class="text-green-400 text-4xl" id="ashar">--:--</div>Ashar</div>
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl"><div class="text-green-400 text-4xl" id="maghrib">--:--</div>Maghrib</div>
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl"><div class="text-green-400 text-4xl" id="isya">--:--</div>Isya</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="text-center text-white text-xl px-12 pb-6 z-10 relative">
+    <div class="bg-black bg-opacity-30 p-4 rounded-xl overflow-hidden relative h-12">
+      <div class="absolute marquee left-0 top-2 whitespace-nowrap">Mohon HP-nya di mode pesawat agar tidak mengganggu jamaah | syiarhub.com</div>
+    </div>
+  </div>
 
   <script>
-    moment.updateLocale('id', {
-      weekdays: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-      months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-    });
-
-    function updateClock() {
-      const now = moment();
-      document.getElementById("clock").textContent = now.format("HH:mm:ss");
-      document.getElementById("tanggalMasehi").textContent = now.locale('id').format("dddd, D MMMM YYYY");
-      document.getElementById("tanggalHijri").textContent = now.format("iD iMMMM iYYYY") + 'H';
+    // Jam dan Tanggal
+    function updateJam() {
+      const now = new Date();
+      const jam = now.toLocaleTimeString('id-ID', { hour12: false });
+      document.getElementById('jam').textContent = jam;
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateJam, 1000);
+    updateJam();
+    const tanggal = new Date();
+    document.getElementById('tanggal').textContent = tanggal.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-    let slideIndex = 0;
-    const slides = Array.from(document.querySelectorAll(".slide"));
-    setInterval(() => {
-      slides.forEach((el, i) => el.classList.toggle("hidden", i !== slideIndex));
-      slideIndex = (slideIndex + 1) % slides.length;
-    }, 10000);
-
-    const audio = document.getElementById("audioPlayer");
-    const playBtn = document.getElementById("playPause");
-    let isPlaying = false;
-
-    function togglePlay() {
-      if (isPlaying) {
-        audio.pause();
-        playBtn.textContent = "▶️";
-      } else {
-        audio.play();
-        playBtn.textContent = "⏸";
-      }
-      isPlaying = !isPlaying;
+    // Countdown
+    const target = new Date('2025-03-10T00:00:00');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = target - now;
+      const hari = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const jam = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const menit = Math.floor((diff / 1000 / 60) % 60);
+      const detik = Math.floor((diff / 1000) % 60);
+      document.getElementById('countdown').textContent = `${hari} Hari ${jam} Jam ${menit} Menit ${detik} Detik`;
     }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-    function nextAudio() {
-      audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/002.mp3";
-      audio.play();
-      isPlaying = true;
-      playBtn.textContent = "⏸";
-    }
+    // Jadwal Sholat
+    fetch('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11')
+      .then(res => res.json())
+      .then(data => {
+        const times = data.data.timings;
+        document.getElementById('subuh').textContent = times.Fajr;
+        document.getElementById('dzuhur').textContent = times.Dhuhr;
+        document.getElementById('ashar').textContent = times.Asr;
+        document.getElementById('maghrib').textContent = times.Maghrib;
+        document.getElementById('isya').textContent = times.Isha;
 
-    function prevAudio() {
-      audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3";
-      audio.play();
-      isPlaying = true;
-      playBtn.textContent = "⏸";
-    }
-
-    async function getJadwalSholat() {
-      const response = await axios.get('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=20');
-      const data = response.data.data.timings;
-      const jadwal = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-
-      const container = document.getElementById("jadwalContainer");
-      container.innerHTML = '';
-      jadwal.forEach((sholat) => {
-        container.innerHTML += `
-          <div class="bg-dark-glass rounded-lg py-4">
-            <div class="text-4xl font-bold text-green-300">${data[sholat]}</div>
-            <div class="mt-1 text-xl">${sholat}</div>
-          </div>
-        `;
+        // Play adzan ketika waktu sholat dimulai (simple demo)
+        setInterval(() => {
+          const now = new Date();
+          const nowTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+          if (Object.values(times).includes(nowTime)) {
+            document.getElementById('adzan').play();
+          }
+        }, 60000);
       });
 
-      checkAzanTimes(data);
-    }
-
-    let azanPlayed = false;
-    function checkAzanTimes(timings) {
-      setInterval(() => {
-        const now = moment().format("HH:mm");
-        Object.values(timings).forEach(time => {
-          if (now === time && !azanPlayed) {
-            document.getElementById("azanPlayer").play();
-            azanPlayed = true;
-            setTimeout(() => azanPlayed = false, 60000);
-          }
-        });
-      }, 30000);
-    }
-
-    getJadwalSholat();
-
+    // Fullscreen
     function toggleFullscreen() {
-      const elem = document.documentElement;
       if (!document.fullscreenElement) {
-        elem.requestFullscreen();
+        document.documentElement.requestFullscreen();
       } else {
         document.exitFullscreen();
       }
     }
+
+    // Hadist harian
+    const hadistList = [
+      '"Sholat adalah tiang agama." (HR. Baihaqi)',
+      '"Sesungguhnya sholat mencegah dari perbuatan keji." (QS. Al-Ankabut: 45)',
+      '"Sholat yang paling berat bagi orang munafik adalah Isya dan Subuh." (HR. Bukhari)',
+      '"Dekatkan diri dengan Allah lewat sujud." (HR. Muslim)',
+    ];
+    const hariIni = new Date().getDate() % hadistList.length;
+    document.getElementById('hadist').textContent = hadistList[hariIni];
+
+    // Ganti tema waktu
+    function updateTheme() {
+      const jam = new Date().getHours();
+      const body = document.getElementById('body');
+      const stars = document.getElementById('stars');
+
+      if (jam >= 4 && jam < 6) body.style.background = '#1e3a8a';          // Subuh
+      else if (jam >= 6 && jam < 12) body.style.background = '#facc15';    // Pagi
+      else if (jam >= 12 && jam < 15) body.style.background = '#f97316';   // Dzuhur
+      else if (jam >= 15 && jam < 18) body.style.background = '#fb923c';   // Ashar
+      else if (jam >= 18 && jam < 19) body.style.background = '#dc2626';   // Maghrib
+      else { 
+        body.style.background = '#0f172a';                                 // Malam
+        stars.classList.remove('hidden');
+      }
+    }
+    setInterval(updateTheme, 30000);
+    updateTheme();
   </script>
 </body>
 </html>
