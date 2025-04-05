@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAM SHOLAT</title>
+    <!-- Menambahkan Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #FFCC00;
+            --bg-dark: #0c0c0c;
+            --text-light: white;
+            --date-bg-color: rgba(0, 0, 0, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main-card {
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            justify-content: space-between;
+        }
+
+        .header {
+            height: 15%;
+            background-color: var(--primary-color);
+            color: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .date {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 0.5em;
+            color: var(--text-light);
+            background: var(--date-bg-color);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .clock {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .video-slide {
+            height: 50%;
+            position: relative;
+            background-color: #000;
+        }
+
+        .video-slide iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Container waktu sholat */
+        .waktu-sholat-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            justify-content: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .waktu-sholat-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            border: 2px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .waktu-sholat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .hadith {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 10px;
+            padding: 10px;
+            color: var(--primary-color);
+        }
+
+        .footer {
+            height: 10%;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .kas-info {
+            animation: scrollText 20s linear infinite;
+        }
+
+        @keyframes scrollText {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: var(--text-light);
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-btn i {
+            width: 20px;
+            height: 20px;
+        }
+		        /* Media query untuk menyembunyikan teks Arab pada perangkat kecil */
+        @media (max-width: 768px) {
+            .hadith p:first-child {
+                display: none;
+            }
+            .waktu-sholat-card {
+                min-width: 120px; /* Ukuran minimal card lebih kecil di layar kecil */
+                max-width: 150px; /* Membatasi ukuran card agar tetap pas */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-card">
+        <div class="header">
+            <div class="date" id="date"></div> <!-- Tanggal di pojok kiri header -->
+            JWS
+        </div>
+        <div class="video-slide">
+            <iframe src="https://www.youtube.com/embed/FEji4b55_kw?autoplay=1&mute=1&loop=1&playlist=FEji4b55_kw" frameborder="0" allowfullscreen></iframe>
+            <div class="clock" id="clock"></div>
+        </div>
+        
+        <!-- Waktu sholat container berada di bawah video -->
+        <div class="waktu-sholat-container" id="waktu-sholat-container"></div>
+
+        <!-- Hadith Display -->
+        <div class="hadith" id="hadith"></div>
+
+        <div class="footer">
+            <div class="kas-info">Maapin gue yeh kalo ada salah dan khilap , sengaja atau pun memang disengaja. maapin lahir batin ye, minal aidin wal faidzin mohon maap ne </div>
+        </div>
+        
+        <!-- Tombol Fullscreen dengan Ikon Font Awesome -->
+        <button class="fullscreen-btn" id="fullscreen-btn">
+            <i class="fas fa-expand-arrows-alt"></i> <!-- Ikon Font Awesome untuk fullscreen -->
+        </button>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+
+            // Menambahkan tanggal dan hari
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const dayName = days[now.getDay()];
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // Bulan dimulai dari 0
+            const year = now.getFullYear();
+            document.getElementById('date').textContent = `${dayName}, ${day}/${month}/${year}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function fetchPrayerTimes(lat, lon) {
+            const apiUrl = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const timings = data.data.timings;
+                    const waktuSholat = [
+                        { nama: "Subuh", waktu: timings.Fajr },
+                        { nama: "Dzuhur", waktu: timings.Dhuhr },
+                        { nama: "Ashar", waktu: timings.Asr },
+                        { nama: "Maghrib", waktu: timings.Maghrib },
+                        { nama: "Isya", waktu: timings.Isha }
+                    ];
+                    document.getElementById('waktu-sholat-container').innerHTML = waktuSholat.map(item => `
+                        <div class="waktu-sholat-card">
+                            <p><strong>${item.nama}</strong></p>
+                            <p>${item.waktu}</p>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                fetchPrayerTimes(position.coords.latitude, position.coords.longitude);
+            }, () => {
+                fetchPrayerTimes(-6.2088, 106.8456); // Default Jakarta coordinates
+            });
+        } else {
+            fetchPrayerTimes(-6.2088, 106.8456); // Default Jakarta coordinates
+        }
+
+        const hadiths = [
+            { arab: "الصَّلَاةُ نُورٌ", terjemah: "Shalat adalah cahaya." },
+            { arab: "إِنَّ أَحَبَّ الْأَعْمَالِ إِلَى اللَّهِ الصَّلَاةُ عَلَى وَقْتِهَا", terjemah: "Sesungguhnya amalan yang paling dicintai Allah adalah shalat pada waktunya." },
+            { arab: "مَنْ يَرِدِ اللَّهُ بِهِ خَيْرًا يُفَقِّهْهُ فِي الدِّينِ", terjemah: "Barangsiapa yang Allah kehendaki kebaikan baginya, maka Dia akan memberikan pemahaman dalam agama." },
+            { arab: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", terjemah: "Sesungguhnya segala amal itu tergantung pada niatnya." },
+            { arab: "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ", terjemah: "Tidak sempurna iman salah seorang di antara kalian hingga ia mencintai untuk saudaranya apa yang ia cintai untuk dirinya sendiri." },
+            { arab: "الدِّينُ يُسْرٌ", terjemah: "Sesungguhnya agama itu mudah." },
+            { arab: "مَنْ صَلَّى الْفَجْرَ فِي جَمَاعَةٍ فَهُوَ فِي ذِمَّةِ اللَّهِ", terjemah: "Barangsiapa yang shalat Subuh berjamaah, maka ia dalam lindungan Allah." },
+            { arab: "الرِّحْمَةُ لَا تُنْزَعُ إِلَّا مِنْ شَقِيٍّ", terjemah: "Kasih sayang tidak dicabut kecuali dari orang yang celaka." },
+            { arab: "الكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ", terjemah: "Perkataan yang baik adalah sedekah." },
+            { arab: "مَنْ لَا يَرْحَمُ لَا يُرْحَمُ", terjemah: "Barangsiapa yang tidak memberikan rahmat, maka ia tidak akan diberi rahmat." }
+        ];
+        let hadithIndex = 0;
+        function updateHadith() {
+            const hadith = hadiths[hadithIndex];
+            document.getElementById('hadith').innerHTML = `<p>${hadith.arab}</p><p>${hadith.terjemah}</p>`;
+            hadithIndex = (hadithIndex + 1) % hadiths.length;
+        }
+        setInterval(updateHadith, 10000);
+        updateHadith();
+
+        // Fungsi untuk masuk/keluar fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+    </script>
+</body>
+</html>

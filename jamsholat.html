@@ -50,10 +50,10 @@
 </head>
 <body>
   <div id="mainContainer" class="px-4 py-2 space-y-4">
-    <!-- Tombol fullscreen -->
-    <button onclick="toggleFullscreen()" class="absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full z-50">🔳</button>
+    <button onclick="toggleFullscreen()" class="absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full z-50">
+      🔳
+    </button>
 
-    <!-- Header -->
     <div class="bg-dark-glass rounded-xl p-4">
       <div class="flex justify-between items-center flex-wrap md:flex-nowrap">
         <div>
@@ -61,52 +61,50 @@
           <div class="text-green-400 text-md" id="tanggalHijri"></div>
         </div>
         <div class="text-center w-full md:w-auto my-2">
-          <h1 class="text-3xl font-bold text-green-300">NOPEL HILMI POKOKE</h1>
-          <p class="text-sm text-gray-300">Alamat Asemdoyong Bungas Pontong</p>
+          <h1 class="text-3xl font-bold text-green-300">Masjid Al-Hikmah</h1>
+          <p class="text-sm text-gray-300">Jl. Contoh Nomor 123, Indonesia</p>
         </div>
         <div class="text-3xl font-mono text-green-400" id="clock"></div>
       </div>
     </div>
 
-    <!-- Video dan Hadist -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Video + marquee Ramadhan -->
       <div>
         <iframe width="100%" height="250" class="rounded-xl"
-          src="https://www.youtube.com/embed/Va6btR5aI5s" frameborder="0" allowfullscreen></iframe>
-        <div class="bg-dark-glass mt-2 px-3 py-1 rounded overflow-hidden">
-          <marquee behavior="scroll" direction="left" scrollamount="4" class="text-white">
-            🕌 Pokoke bodo kudunyandan ningora nyandang ya sarungan tok puo ningora nyusul...
-          </marquee>
+          src="https://www.youtube.com/embed/Va6btR5aI5s"
+          frameborder="0" allowfullscreen></iframe>
+        <div class="bg-dark-glass mt-2 px-3 py-1 rounded text-center">
+          <strong>Ramadhan</strong><br><small>Menunggu keputusan pemerintah</small>
         </div>
       </div>
 
-      <!-- Card Hadist -->
-      <div class="bg-dark-glass p-4 rounded-xl relative h-56">
-        <div class="h-full overflow-hidden relative">
-          <div class="absolute inset-0 slide text-center flex flex-col items-center justify-center px-2" id="hadis1">
-            <p class="text-3xl text-right w-full mb-2 leading-snug">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ</p>
-            <p class="text-xl">Sesungguhnya amal perbuatan tergantung pada niatnya.</p>
+      <div class="bg-dark-glass p-4 rounded-xl relative">
+        <div class="h-28 overflow-hidden relative">
+          <div class="absolute inset-0 slide" id="hadis1">
+            <p class="text-xl text-right mb-2">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ</p>
+            <p class="text-center">Sesungguhnya amal perbuatan tergantung pada niatnya.</p>
           </div>
-          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis2">
-            <p class="text-3xl text-right w-full mb-2 leading-snug">الدُّنْيَا سِجْنُ الْمُؤْمِنِ</p>
-            <p class="text-xl">Dunia adalah penjara bagi orang mukmin dan surga bagi orang kafir.</p>
+          <div class="absolute inset-0 slide hidden" id="hadis2">
+            <p class="text-xl text-right mb-2">الدُّنْيَا سِجْنُ الْمُؤْمِنِ</p>
+            <p class="text-center">Dunia adalah penjara bagi orang mukmin dan surga bagi orang kafir.</p>
           </div>
-          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis3">
-            <p class="text-3xl text-right w-full mb-2 leading-snug">مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ</p>
-            <p class="text-xl">Barangsiapa yang beriman kepada Allah dan hari akhir, hendaklah ia berkata baik atau diam.</p>
+          <div class="absolute inset-0 slide hidden" id="hadis3">
+            <p class="text-xl text-right mb-2">مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ</p>
+            <p class="text-center">Barangsiapa beriman kepada Allah dan hari akhir, hendaklah berkata baik atau diam.</p>
           </div>
-          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis4">
-            <p class="text-3xl text-right w-full mb-2 leading-snug">خَيْرُكُمْ أَحْسَنُكُمْ أَخْلَاقًا</p>
-            <p class="text-xl">Sebaik-baik kalian adalah yang paling baik akhlaknya.</p>
+          <div class="absolute inset-0 slide hidden" id="hadis4">
+            <p class="text-xl text-right mb-2">إِنَّ مِنْ خِيَارِكُمْ أَحْسَنُكُمْ أَخْلَاقًا</p>
+            <p class="text-center">Sebaik-baik kalian adalah yang paling baik akhlaknya.</p>
           </div>
-          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis5">
-            <p class="text-3xl text-right w-full mb-2 leading-snug">إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ</p>
-            <p class="text-xl">Sesungguhnya Allah tidak melihat rupa dan harta kalian, tetapi Dia melihat hati dan amal kalian.</p>
+          <div class="absolute inset-0 slide hidden" id="hadis5">
+            <p class="text-xl text-right mb-2">إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ وَأَمْوَالِكُمْ، وَلَكِنْ يَنْظُرُ إِلَى قُلُوبِكُمْ وَأَعْمَالِكُمْ</p>
+            <p class="text-center">Sesungguhnya Allah tidak melihat rupa dan harta kalian, tetapi Dia melihat hati dan amal kalian.</p>
+          </div>
+          <div class="absolute inset-0 slide hidden" id="hadis6">
+            <p class="text-xl text-right mb-2">ثَلاَثٌ مَنْ كُنَّ فِيهِ وَجَدَ حَلاَوَةَ الإِيمَانِ</p>
+            <p class="text-center">Tiga hal yang jika ada pada seseorang, ia akan merasakan manisnya iman: mencintai Allah dan Rasul-Nya di atas segalanya, mencintai karena Allah, dan membenci kembali kepada kekufuran seperti benci dilempar ke neraka.</p>
           </div>
         </div>
-
-        <!-- Audio Controls -->
         <div class="flex items-center justify-center mt-4 space-x-4">
           <button onclick="prevAudio()" class="text-white text-xl">⏮</button>
           <button onclick="togglePlay()" class="text-white text-2xl" id="playPause">▶️</button>
@@ -116,20 +114,15 @@
       </div>
     </div>
 
-    <!-- Jadwal Sholat -->
     <div id="jadwalContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center text-white"></div>
 
-    <!-- Running Text Footer -->
-<marquee class="text-white text-2xl mt-4 bg-black bg-opacity-30 p-2 rounded">
-  Mohon HP-nya di mode pesawat agar tidak mengganggu pasangan saat lihat isi pesan pasangan muda | djcell.site
-</marquee>
-
+    <marquee class="text-white mt-4 bg-black bg-opacity-30 p-2 rounded">
+      Mohon HP-nya di mode pesawat agar tidak mengganggu jamaah | syiarhub.com
+    </marquee>
   </div>
 
-  <!-- Azan Audio -->
   <audio id="azanPlayer" src="https://yourdomain.com/audio/azan.mp3"></audio>
 
-  <!-- Script sama seperti sebelumnya -->
   <script>
     moment.updateLocale('id', {
       weekdays: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
@@ -185,6 +178,7 @@
       const response = await axios.get('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=20');
       const data = response.data.data.timings;
       const jadwal = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
       const container = document.getElementById("jadwalContainer");
       container.innerHTML = '';
       jadwal.forEach((sholat) => {
@@ -195,6 +189,7 @@
           </div>
         `;
       });
+
       checkAzanTimes(data);
     }
 
