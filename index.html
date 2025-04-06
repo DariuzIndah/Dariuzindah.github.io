@@ -120,108 +120,171 @@
     <div id="jadwalContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center text-white"></div>
 
     <!-- Running Text Footer -->
-<marquee class="text-white text-2xl mt-4 bg-black bg-opacity-30 p-2 rounded">
+<!-- <marquee class="text-white text-2xl mt-4 bg-black bg-opacity-30 p-2 rounded">
   Mohon HP-nya di mode pesawat agar tidak mengganggu pasangan saat lihat isi pesan pasangan muda | djcell.site
-</marquee>
+</marquee>  -->
+<div id="hadis1" class="text-white slide"></div>
 
+<marquee id="marqueeText" class="text-white text-2xl mt-4 bg-black bg-opacity-30 p-2 rounded">
+  Memuat pengumuman...
+</marquee>
   </div>
 
   <!-- Azan Audio -->
-  <audio id="azanPlayer" src="https://yourdomain.com/audio/azan.mp3"></audio>
+  <audio id="azanPlayer" src="https://dariuzindah.github.io/azan.mp3"></audio>
 
   <!-- Script sama seperti sebelumnya -->
-  <script>
-    moment.updateLocale('id', {
-      weekdays: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-      months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+<script>
+  moment.updateLocale('id', {
+    weekdays: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+    months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+  });
+
+  function updateClock() {
+    const now = moment();
+    document.getElementById("clock").textContent = now.format("HH:mm:ss");
+    document.getElementById("tanggalMasehi").textContent = now.locale('id').format("dddd, D MMMM YYYY");
+    document.getElementById("tanggalHijri").textContent = now.format("iD iMMMM iYYYY") + 'H';
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  let slideIndex = 0;
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  setInterval(() => {
+    slides.forEach((el, i) => el.classList.toggle("hidden", i !== slideIndex));
+    slideIndex = (slideIndex + 1) % slides.length;
+  }, 10000);
+
+  const audio = document.getElementById("audioPlayer");
+  const playBtn = document.getElementById("playPause");
+  let isPlaying = false;
+
+  function togglePlay() {
+    if (isPlaying) {
+      audio.pause();
+      playBtn.textContent = "▶️";
+    } else {
+      audio.play();
+      playBtn.textContent = "⏸";
+    }
+    isPlaying = !isPlaying;
+  }
+
+  function nextAudio() {
+    audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/002.mp3";
+    audio.play();
+    isPlaying = true;
+    playBtn.textContent = "⏸";
+  }
+
+  function prevAudio() {
+    audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3";
+    audio.play();
+    isPlaying = true;
+    playBtn.textContent = "⏸";
+  }
+
+  async function getJadwalSholat() {
+    const response = await axios.get('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=20');
+    const data = response.data.data.timings;
+    const jadwal = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    const container = document.getElementById("jadwalContainer");
+    container.innerHTML = '';
+    jadwal.forEach((sholat) => {
+      container.innerHTML += `
+        <div class="bg-dark-glass rounded-lg py-4">
+          <div class="text-4xl font-bold text-green-300">${data[sholat]}</div>
+          <div class="mt-1 text-xl">${sholat}</div>
+        </div>
+      `;
     });
+    checkAzanTimes(data);
+  }
 
-    function updateClock() {
-      const now = moment();
-      document.getElementById("clock").textContent = now.format("HH:mm:ss");
-      document.getElementById("tanggalMasehi").textContent = now.locale('id').format("dddd, D MMMM YYYY");
-      document.getElementById("tanggalHijri").textContent = now.format("iD iMMMM iYYYY") + 'H';
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    let slideIndex = 0;
-    const slides = Array.from(document.querySelectorAll(".slide"));
+  let azanPlayed = false;
+  function checkAzanTimes(timings) {
     setInterval(() => {
-      slides.forEach((el, i) => el.classList.toggle("hidden", i !== slideIndex));
-      slideIndex = (slideIndex + 1) % slides.length;
-    }, 10000);
-
-    const audio = document.getElementById("audioPlayer");
-    const playBtn = document.getElementById("playPause");
-    let isPlaying = false;
-
-    function togglePlay() {
-      if (isPlaying) {
-        audio.pause();
-        playBtn.textContent = "▶️";
-      } else {
-        audio.play();
-        playBtn.textContent = "⏸";
-      }
-      isPlaying = !isPlaying;
-    }
-
-    function nextAudio() {
-      audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/002.mp3";
-      audio.play();
-      isPlaying = true;
-      playBtn.textContent = "⏸";
-    }
-
-    function prevAudio() {
-      audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3";
-      audio.play();
-      isPlaying = true;
-      playBtn.textContent = "⏸";
-    }
-
-    async function getJadwalSholat() {
-      const response = await axios.get('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=20');
-      const data = response.data.data.timings;
-      const jadwal = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-      const container = document.getElementById("jadwalContainer");
-      container.innerHTML = '';
-      jadwal.forEach((sholat) => {
-        container.innerHTML += `
-          <div class="bg-dark-glass rounded-lg py-4">
-            <div class="text-4xl font-bold text-green-300">${data[sholat]}</div>
-            <div class="mt-1 text-xl">${sholat}</div>
-          </div>
-        `;
-      });
-      checkAzanTimes(data);
-    }
-
-    let azanPlayed = false;
-    function checkAzanTimes(timings) {
-      setInterval(() => {
-        const now = moment().format("HH:mm");
-        Object.values(timings).forEach(time => {
-          if (now === time && !azanPlayed) {
-            document.getElementById("azanPlayer").play();
-            azanPlayed = true;
-            setTimeout(() => azanPlayed = false, 60000);
+      const now = moment().format("HH:mm");
+      for (const [name, time] of Object.entries(timings)) {
+        if (now === time && !azanPlayed) {
+          const azanPlayer = document.getElementById("azanPlayer");
+          if (name === "Fajr") {
+            azanPlayer.src = "adzansubuh.mp3"; // Adzan khusus Subuh
+          } else {
+            azanPlayer.src = "azan.mp3"; // Adzan umum
           }
-        });
-      }, 30000);
-    }
-
-    getJadwalSholat();
-
-    function toggleFullscreen() {
-      const elem = document.documentElement;
-      if (!document.fullscreenElement) {
-        elem.requestFullscreen();
-      } else {
-        document.exitFullscreen();
+          azanPlayer.play();
+          azanPlayed = true;
+          setTimeout(() => azanPlayed = false, 60000);
+          break;
+        }
       }
+    }, 30000);
+  }
+
+  getJadwalSholat();
+
+  function toggleFullscreen() {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen();
+    } else {
+      document.exitFullscreen();
     }
-  </script>
+    // Trigger dummy play untuk unlock autoplay
+    const azanPlayer = document.getElementById("azanPlayer");
+    azanPlayer.play().then(() => {
+      azanPlayer.pause();
+      azanPlayer.currentTime = 0;
+    }).catch(() => {});
+  }
+
+  // ✅ Tambahan: Menampilkan hadist dari hadist.json
+  let hadistList = [];
+  let currentHadistIndex = 0;
+
+  async function loadHadist() {
+    try {
+      const res = await fetch("hadist.json");
+      hadistList = await res.json();
+      tampilkanHadist();
+      setInterval(gantiHadist, 10000);
+    } catch (e) {
+      console.error("Gagal memuat hadist:", e);
+    }
+  }
+
+  function tampilkanHadist() {
+    const el = document.getElementById("hadis1"); // ganti ID sesuai elemen kamu
+    const hadis = hadistList[currentHadistIndex];
+    el.innerHTML = `
+      <p class="text-3xl text-right w-full mb-2 leading-snug">${hadis.arab}</p>
+      <p class="text-xl">${hadis.indo}</p>
+    `;
+  }
+
+  function gantiHadist() {
+    currentHadistIndex = (currentHadistIndex + 1) % hadistList.length;
+    tampilkanHadist();
+  }
+
+  loadHadist();
+
+  // ✅ Tambahan: Menampilkan pengumuman dari pengumuman.json
+  async function loadPengumuman() {
+    try {
+      const res = await fetch("pengumuman.json");
+      const data = await res.json();
+      const isi = data.join(" | ");
+      document.getElementById("marqueeText").textContent = isi;
+    } catch (e) {
+      console.error("Gagal memuat pengumuman:", e);
+    }
+  }
+
+  loadPengumuman();
+</script>
+
 </body>
 </html>
