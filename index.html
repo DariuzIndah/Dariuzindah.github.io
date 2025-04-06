@@ -255,13 +255,15 @@
     }
   }
 
-  function tampilkanHadist() {
-    const el = document.getElementById("hadis1"); // ganti ID sesuai elemen kamu
-    const hadis = hadistList[currentHadistIndex];
-    el.innerHTML = `
-      <p class="text-3xl text-right w-full mb-2 leading-snug">${hadis.arab}</p>
-      <p class="text-xl">${hadis.indo}</p>
-    `;
+function tampilkanHadist() {
+  const el = document.getElementById("hadis1");
+  const hadis = hadistList[currentHadistIndex];
+
+  el.innerHTML = `
+    ${hadis.gambar ? `<img src="${hadis.gambar}" alt="Gambar Hadist" class="mb-3 w-full h-40 object-cover rounded-xl">` : ''}
+    <p class="text-3xl text-right w-full mb-2 leading-snug">${hadis.arab}</p>
+    <p class="text-xl">${hadis.indo}</p>
+  `;
   }
 
   function gantiHadist() {
