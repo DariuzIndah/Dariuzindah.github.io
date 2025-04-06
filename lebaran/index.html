@@ -1,136 +1,290 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>DJCELLNET dan Keluarga mengucapkan Selamat Idul Fitri</title>
-  <meta name="description" content="Taqabbalallahu Minna Wa Minkum Shiyamana Wa Shiyamakum">
-  <meta property="og:title" content="Ibnu dan Keluarga mengucapkan Selamat Idul Fitri" />
-  <meta property="og:description" content="Taqabbalallahu Minna Wa Minkum Shiyamana Wa Shiyamakum">
-  <meta property="og:image" content="https://dariuzindah.github.io/lebaran/images/image.jpg">
-  <meta property="og:image:width" content="640">
-  <meta property="og:image:height" content="480">
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://dariuzindah.github.io/lebaran" />
-  <meta name="twitter:site" content="@ibnux" />
-  <meta name="twitter:creator" content="@ibnumaksum" />
-  <meta name="twitter:image" content="https://dariuzindah.github.io/lebaran/images/image.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="shortcut icon" href="favicon.ico">
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
-  <!-- Bintang background -->
-  <link rel="stylesheet" href="cssjs/bintang.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jam Sholat Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment-hijri@2.1.1/moment-hijri.min.js"></script>
   <style>
-    @font-face {
-      font-family: lebaran;
-      src: url('cssjs/lebaran.otf');
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
     }
-
-    html {
-      font-size: 14px;
-    }
-
-    @media (min-width: 768px) {
-      html {
-        font-size: 16px;
-      }
-    }
-
-    .container {
-      max-width: 960px;
-    }
-
     body {
-      font-family: lebaran, sans-serif;
-      background-color: transparent;
-      background-image: url('images/bgtop.png');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-position: top left;
+      background: url('baground.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
     }
-
-    .card {
-      background-color: rgba(255, 255, 255, 0.6);
+    #mainContainer {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-
-    footer {
-      font-family: sans-serif;
+    .bg-dark-glass {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
+    .slide {
+      transition: opacity 1s ease-in-out;
+    }
+    .slide.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
     }
   </style>
 </head>
-
 <body>
-  <!-- Background bintang -->
-  <div id='stars'></div>
-  <div id='stars2'></div>
-  <div id='stars3'></div>
+  <div id="mainContainer" class="px-4 py-2 space-y-4">
+    <!-- Tombol fullscreen -->
+    <button onclick="toggleFullscreen()" class="absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-2 rounded-full z-50">🔳</button>
 
-  <div class="container py-5">
-    <div class="text-center mb-5">
-<img src="images/bersama.jpg" class="img-fluid mb-4" style="max-width: 300px; border-radius: 20px;">
-      <h2 class="text-white mb-2">Keluarga DJCELNET</h2>
-      <h4 class="text-white mb-2">Mengucapkan</h4>
-      <h3 class="text-white mb-3">Selamat Hari Raya Idul Fitri</h3>
-      <img src="https://media.giphy.com/media/UvVgGWHFbFh0Ph1IuL/200w_d.gif" class="mb-3">
-      <h4 class="text-white mb-1">Taqabbalallahu Minna Wa Minkum</h4>
-      <h4 class="text-white mb-1">Shiyamana Wa Shiyamakum</h4>
-      <h4 class="text-white mb-0">Mohon Maaf Lahir dan Batin</h4>
-    </div>
-
-    <div class="card-deck text-center mb-5">
-      <!-- Anak pertama -->
-      <div class="card shadow-sm">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Maziyah Fakhriyana</h4>
+    <!-- Header -->
+    <div class="bg-dark-glass rounded-xl p-4">
+      <div class="flex justify-between items-center flex-wrap md:flex-nowrap">
+        <div>
+          <div class="text-lg" id="tanggalMasehi"></div>
+          <div class="text-green-400 text-md" id="tanggalHijri"></div>
         </div>
-        <img class="card-img-top" src="images/rafa.jpg" alt="Maziyah">
-        <div class="card-body">
-          <h1 class="card-title pricing-card-title">11 <small class="text-muted">Tahun</small></h1>
-          <ul class="list-unstyled mt-3 mb-4">
-            <li>Hobi Main Tiktok</li>
-            <li>Sholeh</li>
-            <li>Penurut</li>
-            <li>Sayang adiknya</li>
-          </ul>
+        <div class="text-center w-full md:w-auto my-2">
+          <h1 class="text-3xl font-bold text-green-300">NOPEL HILMI POKOKE</h1>
+          <p class="text-sm text-gray-300">Alamat Asemdoyong Bungas Pontong</p>
         </div>
-        <div class="card-footer">
-          <img src="images/QRIS_RAFA.png" class="img-fluid" alt="QRIS Rafa">
-        </div>
-      </div>
-
-      <!-- Anak kedua -->
-      <div class="card shadow-sm">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">Ibrahim Ad-Ham Elfariziy</h4>
-        </div>
-        <img class="card-img-top" src="images/gizan.jpg" alt="Gizan">
-        <div class="card-body">
-          <h1 class="card-title pricing-card-title">5 <small class="text-muted">Tahun</small></h1>
-          <ul class="list-unstyled mt-3 mb-4">
-            <li>Gemar main Game</li>
-            <li>Hobi Youtube</li>
-            <li>Aktif</li>
-            <li>Gemar tertawa</li>
-          </ul>
-        </div>
-        <div class="card-footer">
-          <img src="images/QRIS_GIZAN.png" class="img-fluid" alt="QRIS Gizan">
-        </div>
+        <div class="text-3xl font-mono text-green-400" id="clock"></div>
       </div>
     </div>
 
-    <footer class="pt-4 border-top text-white text-center">
-      created by @mase<br>
-      <small>&copy; 2025 All rights reserved.</small>
-    </footer>
+    <!-- Video dan Hadist -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Video + marquee Ramadhan -->
+      <div>
+        <iframe width="100%" height="250" class="rounded-xl"
+          src="https://www.youtube.com/embed/YNalDSbKSPQ?autoplay=1&mute=1&loop=1&playlist=YNalDSbKSPQ" frameborder="0" allowfullscreen></iframe>
+        <div class="bg-dark-glass mt-2 px-3 py-1 rounded overflow-hidden">
+          <marquee behavior="scroll" direction="left" scrollamount="4" class="text-white">
+            🕌 Pokoke bodo kudunyandan ningora nyandang ya sarungan tok puo ningora nyusul...
+          </marquee>
+        </div>
+      </div>
+
+      <!-- Card Hadist -->
+      <div class="bg-dark-glass p-4 rounded-xl relative h-56">
+        <div class="h-full overflow-hidden relative">
+          <div class="absolute inset-0 slide text-center flex flex-col items-center justify-center px-2" id="hadis1">
+            <p class="text-3xl text-right w-full mb-2 leading-snug">إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ</p>
+            <p class="text-xl">Sesungguhnya amal perbuatan tergantung pada niatnya.</p>
+          </div>
+          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis2">
+            <p class="text-3xl text-right w-full mb-2 leading-snug">الدُّنْيَا سِجْنُ الْمُؤْمِنِ</p>
+            <p class="text-xl">Dunia adalah penjara bagi orang mukmin dan surga bagi orang kafir.</p>
+          </div>
+          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis3">
+            <p class="text-3xl text-right w-full mb-2 leading-snug">مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ</p>
+            <p class="text-xl">Barangsiapa yang beriman kepada Allah dan hari akhir, hendaklah ia berkata baik atau diam.</p>
+          </div>
+          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis4">
+            <p class="text-3xl text-right w-full mb-2 leading-snug">خَيْرُكُمْ أَحْسَنُكُمْ أَخْلَاقًا</p>
+            <p class="text-xl">Sebaik-baik kalian adalah yang paling baik akhlaknya.</p>
+          </div>
+          <div class="absolute inset-0 slide hidden text-center flex flex-col items-center justify-center px-2" id="hadis5">
+            <p class="text-3xl text-right w-full mb-2 leading-snug">إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ</p>
+            <p class="text-xl">Sesungguhnya Allah tidak melihat rupa dan harta kalian, tetapi Dia melihat hati dan amal kalian.</p>
+          </div>
+        </div>
+
+        <!-- Audio Controls -->
+        <div class="flex items-center justify-center mt-4 space-x-4">
+          <button onclick="prevAudio()" class="text-white text-xl">⏮</button>
+          <button onclick="togglePlay()" class="text-white text-2xl" id="playPause">▶️</button>
+          <button onclick="nextAudio()" class="text-white text-xl">⏭</button>
+        </div>
+        <audio id="audioPlayer" src="https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3"></audio>
+      </div>
+    </div>
+
+    <!-- Jadwal Sholat -->
+    <div id="jadwalContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center text-white"></div>
+
+    <!-- Running Text Footer -->
+<!-- <marquee class="text-white text-2xl mt-4 bg-black bg-opacity-30 p-2 rounded">
+  Mohon HP-nya di mode pesawat agar tidak mengganggu pasangan saat lihat isi pesan pasangan muda | djcell.site
+</marquee>  -->
+<div id="hadis1" class="text-white slide"></div>
+
+<marquee id="marqueeText" class="text-white text-2xl mt-4 bg-black bg-opacity-30 p-2 rounded">
+  Memuat pengumuman...
+</marquee>
   </div>
 
-  <script type="text/javascript" src="https://static1.twitcount.com/js/button.js"></script>
-</body>
+  <!-- Azan Audio -->
+  <audio id="azanPlayer" src="https://dariuzindah.github.io/azan.mp3"></audio>
 
+  <!-- Script sama seperti sebelumnya -->
+<script>
+  moment.updateLocale('id', {
+    weekdays: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+    months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+  });
+
+  function updateClock() {
+    const now = moment();
+    document.getElementById("clock").textContent = now.format("HH:mm:ss");
+    document.getElementById("tanggalMasehi").textContent = now.locale('id').format("dddd, D MMMM YYYY");
+    document.getElementById("tanggalHijri").textContent = now.format("iD iMMMM iYYYY") + 'H';
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  let slideIndex = 0;
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  setInterval(() => {
+    slides.forEach((el, i) => el.classList.toggle("hidden", i !== slideIndex));
+    slideIndex = (slideIndex + 1) % slides.length;
+  }, 10000);
+
+  const audio = document.getElementById("audioPlayer");
+  const playBtn = document.getElementById("playPause");
+  let isPlaying = false;
+
+  function togglePlay() {
+    if (isPlaying) {
+      audio.pause();
+      playBtn.textContent = "▶️";
+    } else {
+      audio.play();
+      playBtn.textContent = "⏸";
+    }
+    isPlaying = !isPlaying;
+  }
+
+  function nextAudio() {
+    audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/002.mp3";
+    audio.play();
+    isPlaying = true;
+    playBtn.textContent = "⏸";
+  }
+
+  function prevAudio() {
+    audio.src = "https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3";
+    audio.play();
+    isPlaying = true;
+    playBtn.textContent = "⏸";
+  }
+
+  async function getJadwalSholat() {
+    const response = await axios.get('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=20');
+    const data = response.data.data.timings;
+    const jadwal = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    const container = document.getElementById("jadwalContainer");
+    container.innerHTML = '';
+    jadwal.forEach((sholat) => {
+      container.innerHTML += `
+        <div class="bg-dark-glass rounded-lg py-4">
+          <div class="text-4xl font-bold text-green-300">${data[sholat]}</div>
+          <div class="mt-1 text-xl">${sholat}</div>
+        </div>
+      `;
+    });
+    checkAzanTimes(data);
+  }
+
+  let azanPlayed = false;
+  function checkAzanTimes(timings) {
+    setInterval(() => {
+      const now = moment().format("HH:mm");
+      for (const [name, time] of Object.entries(timings)) {
+        if (now === time && !azanPlayed) {
+          const azanPlayer = document.getElementById("azanPlayer");
+          if (name === "Fajr") {
+            azanPlayer.src = "adzansubuh.mp3"; // Adzan khusus Subuh
+          } else {
+            azanPlayer.src = "azan.mp3"; // Adzan umum
+          }
+          azanPlayer.play();
+          azanPlayed = true;
+          setTimeout(() => azanPlayed = false, 60000);
+          break;
+        }
+      }
+    }, 30000);
+  }
+
+  getJadwalSholat();
+
+  function toggleFullscreen() {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+    // Trigger dummy play untuk unlock autoplay
+    const azanPlayer = document.getElementById("azanPlayer");
+    azanPlayer.play().then(() => {
+      azanPlayer.pause();
+      azanPlayer.currentTime = 0;
+    }).catch(() => {});
+  }
+
+  // ✅ Tambahan: Menampilkan hadist dari hadist.json
+  let hadistList = [];
+  let currentHadistIndex = 0;
+
+  async function loadHadist() {
+    try {
+      const res = await fetch("hadist.json");
+      hadistList = await res.json();
+      tampilkanHadist();
+      setInterval(gantiHadist, 10000);
+    } catch (e) {
+      console.error("Gagal memuat hadist:", e);
+    }
+  }
+
+  function tampilkanHadist() {
+    const el = document.getElementById("hadis1"); // ganti ID sesuai elemen kamu
+    const hadis = hadistList[currentHadistIndex];
+    el.innerHTML = `
+      <p class="text-3xl text-right w-full mb-2 leading-snug">${hadis.arab}</p>
+      <p class="text-xl">${hadis.indo}</p>
+    `;
+  }
+
+  function gantiHadist() {
+    currentHadistIndex = (currentHadistIndex + 1) % hadistList.length;
+    tampilkanHadist();
+  }
+
+  loadHadist();
+
+  // ✅ Tambahan: Menampilkan pengumuman dari pengumuman.json
+  async function loadPengumuman() {
+    try {
+      const res = await fetch("pengumuman.json");
+      const data = await res.json();
+      const isi = data.join(" | ");
+      document.getElementById("marqueeText").textContent = isi;
+    } catch (e) {
+      console.error("Gagal memuat pengumuman:", e);
+    }
+  }
+
+  loadPengumuman();
+</script>
+
+</body>
 </html>
